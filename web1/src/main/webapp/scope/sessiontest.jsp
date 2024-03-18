@@ -14,11 +14,11 @@
         // 세션 값 확인
         String name = (String) session.getAttribute("name");
         String age = (String) session.getAttribute("age");
-        String q = (String) session.getAttribute("age");
-        String w = (String) session.getAttribute("age");
-        String e = (String) session.getAttribute("age");
-        String r = (String) session.getAttribute("age");
-        String t = (String) session.getAttribute("age");
+        String q = (String) session.getAttribute("q");
+        String w = (String) session.getAttribute("w");
+        String e = (String) session.getAttribute("e");
+        String r = (String) session.getAttribute("r");
+        String t = (String) session.getAttribute("t");
         // 형변환을 해줘야함 오브젝트로 오기에
     %>
 
