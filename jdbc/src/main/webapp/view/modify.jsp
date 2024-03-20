@@ -10,8 +10,9 @@
       ${} 를 쓸시 필요가 없어지게 된다 --%>
 
 <h1 class="mt-5">todo Modify</h1>
+<%-- /update  가 아닌 update 만 쓴 이유는 뒤에 주소만 바꾸기 되기에  update 만 붙혀서 해당 주소로 이동 --%>
+<form action="${pageContext.request.contextPath}/update" method="post"><div class="mb-3">
 
-<form action="updatePro.jsp" method="post"><div class="mb-3">
   <label for="title" class="form-label">title</label>
   <%-- <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="title" name="title" value="<%=todo.getTitle()%>"> --%>
   <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="title" name="title" value="${todo.title}" >
@@ -32,8 +33,10 @@
   <textarea class="form-control" id="description" rows="3" name="description"  >${todo.description}</textarea>
 </div>
 <div>
+
 <button class="btn btn-danger" type = "submit">확인</button>
-<a class="btn btn-primary" href='<c:url value="/view/list.jsp"/>'>목록</a>
+<a class="btn btn-danger" href='<c:url value = "/delete?no=${todo.no}"/>'>삭제</a>
+<a class="btn btn-success" href='<c:url value="/list"/>'>목록</a>
 </div>
 <input type="hidden"name="no" value="${todo.no}">
 </form>

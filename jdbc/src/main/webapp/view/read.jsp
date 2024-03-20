@@ -31,8 +31,8 @@
   <textarea class="form-control" id="description" rows="3" name="description" disabled >${todo.description}</textarea>
 </div>
 <div>
-<a class="btn btn-danger" href='modifyPro.jsp?no=${todo.no}'>수정</a>
-<a class="btn btn-primary" href='<c:url value="/view/list.jsp"/>'>목록</a>
+<a class="btn btn-danger" href='<c:url value = "/modify?no=${todo.no}"/>'>수정</a>
+<a class="btn btn-primary" href='<c:url value="/list"/>'>목록</a>
 </div>
 </form>
 
