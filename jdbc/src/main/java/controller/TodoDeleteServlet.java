@@ -23,7 +23,7 @@ public class TodoDeleteServlet extends HttpServlet {
         // 체크박스 라디오 요소에 value 가 없는 경우에는 on 값을 가지고 오게 됨
 
         // 제목 클릭시 no 가져오기
-        String no = req.getParameter("no");
+        String no = req.getParameter("code");
 
         // db 작업
         ToDao dao = new ToDao();

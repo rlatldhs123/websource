@@ -1,26 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ include file="/include/header.jsp" %>
-<h3 class="border-bottom mb-3">도서수정</h3>
+<h3 class="border-bottom mb-3">도서검색</h3>
 
-<form action="<c:url value='/modify' />" method="post">
+<form action="<c:url value='/search' />" method="post">
 
 <div class="row mb-3">
   <div class="col">
-    <input type="text" class="form-control" placeholder="코드" name="code" id="code">
+    <select name="criteria" id="criteria" class="form-select">
+    <option selected >검색 조건 선택</option>
+    <option value="code">코드</option>
+    <option value="writer">작가</option>
+    
+    </select>
   </div>
   <div class="col">
-    <input type="text" class="form-control" placeholder="가격"name="price" id="price">
+    <input type="text" class="form-control" placeholder="검색어"name="keyword" id="keyword">
   </div>
 </div>
 <div>
 
-<button type="submit" class="btn btn-success">수정</button>
+<button type="submit" class="btn btn-success">검색</button>
 <a href='<c:url value="/list"/>' class="btn btb-primary">목록</a>
 </div>
 
 </form>
 <%@ include file="/include/section.jsp" %>
-<script src='<c:url value="/js/modify.js"/>'></script>
+<script src='<c:url value="/js/search.js"/>'></script>
 <%@ include file="/include/footer.jsp" %>
 
 <%-- jsp 는  결과 보여주기 및 입력 받기만 하는데 쓰기 --%>

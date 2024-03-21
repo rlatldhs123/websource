@@ -13,13 +13,20 @@ import javax.servlet.http.HttpServletResponse;
 import dao.BookDao;
 import dto.BookDto;
 
-@WebServlet("/list")
-public class BookListServlet extends HttpServlet {
-
+@WebServlet("/search")
+public class BookSearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        // 검색 기준(criteria) 검색어(키워드) 가져오기
+
+        req.setCharacterEncoding("utf-8");
+
+        String criteria = req.getParameter("criteria");
+        String keyword = req.getParameter("keyword");
+
         BookDao dao = new BookDao();
-        List<BookDto> list = dao.getList();
+        List<BookDto> list = dao.getSearchList(criteria, keyword);
         // list 란 이름으로 리스트 담기 스코프에 담기 req
         req.setAttribute("list", list);
 

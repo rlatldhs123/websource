@@ -12,9 +12,11 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import dto.BookDto;
+import dto.TodoDto;
 
-public class BookDao {
+public class ToDao {
+
+    // jdbc 단계
 
     private Connection con;
     private PreparedStatement pstmt;
@@ -31,8 +33,6 @@ public class BookDao {
             e.printStackTrace();
         }
     }
-
-    // 2. 커넥션 얻기
 
     public Connection getConnection() {
 
@@ -51,41 +51,24 @@ public class BookDao {
         return con;
 
     }
-
-    // etc.
-    // String url = "jdbc:oracle:thin:@localhost:1521:xe"; //
-    // "jdbc:oracle:thin:@localhost:1521:xe"
-    // String user = "C##TEST2";
-    // String password = "test";
-    // try {
-    // con = DriverManager.getConnection(url, user, password);
-
-    // } catch (SQLException e) {
-    // e.printStackTrace();
-
-    // }
-    // return con;
-
-    // }
-
     // 3. sql 작업2
 
     // 전체 조회 - read 전체 조회는 리스트로 해야 한다
 
-    public List<BookDto> getList() {
-        List<BookDto> list = new ArrayList<>();
+    public List<TodoDto> getList() {
+        List<TodoDto> list = new ArrayList<>();
 
         con = getConnection();
-        String sql = "select * from booktbl order by code desc";
+        String sql = "select no, title, created_at, completed from todotbl order by no desc";
         try {
             pstmt = con.prepareStatement(sql);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                BookDto dto = new BookDto();
-                dto.setCode(rs.getInt("code"));
+                TodoDto dto = new TodoDto();
+                dto.setNo(rs.getInt("no"));
                 dto.setTitle(rs.getString("title"));
-                dto.setWriter(rs.getString("writer"));
-                dto.setPrice(rs.getInt("price"));
+                dto.setCreatedAt(rs.getDate("created_at"));
+                dto.setCompleted(rs.getBoolean("completed"));
 
                 list.add(dto);
 
@@ -99,27 +82,23 @@ public class BookDao {
         }
         return list;
     }
-    ///
-    //
-    //
-    // 선택 조회BookDto
 
-    public BookDto getRow(String code) {
-        BookDto dto = null;
+    public TodoDto getRow(String no) {
+        TodoDto dto = null;
 
         con = getConnection();
-        String sql = "select * from booktbl where code=?";
+        String sql = "select * from todotbl where no=?";
         try {
             pstmt = con.prepareStatement(sql);
             // ? 해결
-            pstmt.setInt(1, Integer.parseInt(code));
+            pstmt.setInt(1, Integer.parseInt(no));
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                dto = new BookDto();
-                dto.setCode(rs.getInt("code"));
+                dto = new TodoDto();
+                dto.setNo(rs.getInt("no"));
                 dto.setTitle(rs.getString("title"));
-                dto.setWriter(rs.getString("writer"));
-                dto.setPrice(rs.getInt("price"));
+                dto.setCreatedAt(rs.getDate("created_at"));
+                dto.setCompleted(rs.getBoolean("completed"));
                 dto.setDescription(rs.getString("description"));
 
             }
@@ -132,27 +111,20 @@ public class BookDao {
         }
         return dto;
     }
-    // //
-    // //
-    // //
-    // //
 
     // 추가 create (insert)
-    public int insert(BookDto inserDto) {
+    public int insert(TodoDto inserDto) {
         int result = 0;
 
         con = getConnection();
-        String sql = "INSERT INTO booktbl (code, title, writer, price, description) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO TODOTBL (NO, title, description) VALUES (todo_seq.nextval,?,?)";
 
         try {
 
             pstmt = con.prepareStatement(sql);
 
-            pstmt.setInt(1, inserDto.getCode());
-            pstmt.setString(2, inserDto.getTitle());
-            pstmt.setString(3, inserDto.getWriter());
-            pstmt.setInt(4, inserDto.getPrice());
-            pstmt.setString(5, inserDto.getDescription());
+            pstmt.setString(1, inserDto.getTitle());
+            pstmt.setString(2, inserDto.getDescription());
 
             result = pstmt.executeUpdate(); // 0 false 1 success
 
@@ -166,22 +138,22 @@ public class BookDao {
         return result;
 
     }
-
     // 수정 - update
 
-    public int update(BookDto updateDto) {
+    public int update(TodoDto inserDto) {
         int result = 0;
 
         con = getConnection();
-        String sql = "UPDATE BOOKTBL SET price = ? WHERE code = ?";
+        String sql = "UPDATE TODOTBL SET  COMPLETED =?,DESCRIPTION =?,title=? WHERE NO=?";
 
         try {
 
             pstmt = con.prepareStatement(sql);
 
-            pstmt.setInt(1, updateDto.getPrice());
-            pstmt.setInt(2, updateDto.getCode());
-
+            pstmt.setBoolean(1, inserDto.isCompleted());
+            pstmt.setString(2, inserDto.getDescription());
+            pstmt.setString(3, inserDto.getTitle());
+            pstmt.setInt(4, inserDto.getNo());
             result = pstmt.executeUpdate(); // 0 false 1 success
 
         } catch (SQLException e) {
@@ -192,65 +164,22 @@ public class BookDao {
         }
 
         return result;
+
     }
 
-    public List<BookDto> getSearchList(String criteria, String keyword) {
-        List<BookDto> list = new ArrayList<>();
-
-        con = getConnection();
-
-        String sql = "";
-
-        if (criteria.equals("")) {
-            sql = "SELECT * FROM BOOKTBL b WHERE CODE=?";
-
-        } else {
-            sql = " SELECT * FROM BOOKTBL b WHERE writer=?";
-        }
-
-        //
-        //
-
-        try {
-            pstmt = con.prepareStatement(sql);
-
-            pstmt.setString(1, (keyword));
-
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                BookDto dto = new BookDto();
-                dto.setCode(rs.getInt("code"));
-                dto.setTitle(rs.getString("title"));
-                dto.setWriter(rs.getString("writer"));
-                dto.setPrice(rs.getInt("price"));
-
-                list.add(dto);
-
-            }
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-        } finally {
-            // 자원 닫아주기
-            close(con, pstmt, rs);
-        }
-        return list;
-    }
-
-    // }
     // 삭제 메소드
 
-    public int delete(String code) {
+    public int delete(String no) {
         int result = 0;
 
         con = getConnection();
-        String sql = "DELETE FROM bookTBL  WHERE code=?";
+        String sql = "DELETE FROM TODOTBL t WHERE NO=?";
 
         try {
 
             pstmt = con.prepareStatement(sql);
 
-            pstmt.setInt(1, Integer.parseInt(code));
+            pstmt.setInt(1, Integer.parseInt(no));
             result = pstmt.executeUpdate(); // 0 false 1 success
 
         } catch (SQLException e) {
@@ -263,9 +192,8 @@ public class BookDao {
         return result;
     }
 
-    //
-    //
-    // 자원 닫아주기
+    // 4. 자원 정리
+
     public void close(Connection con, PreparedStatement pstmt, ResultSet rs) {
         try {
             if (rs != null)

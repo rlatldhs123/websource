@@ -131,13 +131,14 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link text-white">
+            <a href='<c:url value="/view/search.jsp"/>' class="nav-link text-white">
+            
               <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#search" /></svg>
               도서검색
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link text-white">
+            <a href='<c:url value="/view/delete.jsp"/>' class="nav-link text-white">
               <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#trash"></use></svg>
               도서삭제
             </a>
@@ -157,7 +158,7 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
+            <img src="https://th.bing.com/th/id/OIP.PgxGBKEEa8ru9Ke1pdveqAHaJO?w=134&h=180&c=7&r=0&o=5&pid=1.7" alt="" width="32" height="32" class="rounded-circle me-2" />
             <strong>mdo</strong>
           </a>
           <ul class="dropdown-menu dropdown-menu-dark text-small shadow">

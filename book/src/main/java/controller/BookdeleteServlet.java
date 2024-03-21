@@ -13,19 +13,30 @@ import javax.servlet.http.HttpServletResponse;
 import dao.BookDao;
 import dto.BookDto;
 
-@WebServlet("/list")
-public class BookListServlet extends HttpServlet {
+// 삭제 서블릿
 
+@WebServlet("/delete")
+public class BookdeleteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        BookDao dao = new BookDao();
-        List<BookDto> list = dao.getList();
-        // list 란 이름으로 리스트 담기 스코프에 담기 req
-        req.setAttribute("list", list);
+        BookDto deleteDto = new BookDto();
 
-        RequestDispatcher rd = req.getRequestDispatcher("/view/list.jsp");
-        rd.forward(req, resp);
-        // 리퀘스트에 담았기에 무조건 포워드
+        String code = req.getParameter("code");
+
+        // db 작업
+
+        BookDao dao = new BookDao();
+
+        int result = dao.delete(code);
+        if (result > 0) {
+            resp.sendRedirect("/list");
+
+        } else {
+            resp.sendRedirect("view/delete.jsp");
+        }
+
+        // 삭제성공시 list 로
+        resp.sendRedirect("/list");
 
     }
 

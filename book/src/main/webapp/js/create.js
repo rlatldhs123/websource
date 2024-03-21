@@ -6,7 +6,7 @@
 
 // 값이 존재한다면 submit 하면 됌
 
-document.querySelector("button").addEventListener("submit", (e) => {
+document.querySelector("form").addEventListener("submit", (e) => {
   e.preventDefault();
 
   const code = document.querySelector("#code");
