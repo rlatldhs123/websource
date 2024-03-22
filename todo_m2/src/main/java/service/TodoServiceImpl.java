@@ -22,6 +22,8 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public boolean insert(TodoDto inserDto) {
         // 1이면 true, 아니면 false
+        // boolean flag = dao.insert(inserDto)==1?true:false;
+        // return flag;
         return dao.insert(inserDto) == 1;
     }
 

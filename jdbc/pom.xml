@@ -9,6 +9,19 @@
   <url>http://maven.apache.org</url>
   <dependencies>
 
+    <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+  </properties>
+
+
+    <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+  </properties>
+
   <!-- 자바 DB 연동 라이브러리 -->
 <dependency>
     <groupId>com.oracle.database.jdbc</groupId>

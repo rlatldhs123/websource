@@ -201,7 +201,7 @@ public class BookDao {
 
         String sql = "";
 
-        if (criteria.equals("")) {
+        if (criteria.equals("code")) {
             sql = "SELECT * FROM BOOKTBL b WHERE CODE=?";
 
         } else {
