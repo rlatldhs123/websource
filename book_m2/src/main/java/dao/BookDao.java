@@ -13,6 +13,8 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import dto.BookDto;
+import dto.ChangeDto;
+import dto.MemberDto;
 
 public class BookDao {
 
@@ -201,7 +203,7 @@ public class BookDao {
 
         String sql = "";
 
-        if (criteria.equals("")) {
+        if (criteria.equals("code")) {
             sql = "SELECT * FROM BOOKTBL b WHERE CODE=?";
 
         } else {
@@ -240,7 +242,7 @@ public class BookDao {
     // }
     // 삭제 메소드
 
-    public int delete(String code) {
+    public int delete(int code) {
         int result = 0;
 
         con = getConnection();
@@ -250,7 +252,7 @@ public class BookDao {
 
             pstmt = con.prepareStatement(sql);
 
-            pstmt.setInt(1, Integer.parseInt(code));
+            pstmt.setInt(1, code);
             result = pstmt.executeUpdate(); // 0 false 1 success
 
         } catch (SQLException e) {
@@ -261,6 +263,134 @@ public class BookDao {
         }
 
         return result;
+    }
+
+    // member 관련 dao
+
+    public MemberDto isLogin(MemberDto loginDto) {
+        // 로그인
+        // SELECT USERID ,NAME FROM MEMBERTBL m WHERE USERID ='hong123'AND PASSWORD
+        // ='hong123';
+
+        String sql = "SELECT USERID, NAME  FROM MEMBERTBL WHERE USERID = ? AND PASSWORD = ?";
+        MemberDto dto = null;
+
+        try {
+
+            con = getConnection();
+
+            pstmt = con.prepareStatement(sql);
+            // ? 해결
+            pstmt.setString(1, loginDto.getUserid());
+            pstmt.setString(2, loginDto.getPassword());
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                dto = new MemberDto();
+                dto.setUserid(rs.getString("userid"));
+                dto.setName(rs.getString("name"));
+
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        } finally {
+            // 자원 닫아주기
+            close(con, pstmt, rs);
+        }
+        return dto;
+    }
+
+    public int passwordChange(ChangeDto ChangeDto) {
+        // 비밀번호 변경
+        int result = 0;
+
+        con = getConnection();
+
+        String sql = "UPDATE MEMBERTBL SET  PASSWORD  =? WHERE USERID =?";
+        MemberDto dto = null;
+
+        try {
+            pstmt = con.prepareStatement(sql);
+            // ? 해결
+            pstmt.setString(1, ChangeDto.getNewPassword());
+            pstmt.setString(2, ChangeDto.getUserid());
+
+            result = pstmt.executeUpdate();
+
+            if (rs.next()) {
+                dto = new MemberDto();
+                dto.setPassword(rs.getString("password"));
+
+                dto.setUserid(rs.getString("userid"));
+
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        } finally {
+            // 자원 닫아주기
+            close(con, pstmt, rs);
+        }
+        return result;
+
+    }
+
+    public int register(MemberDto insertDto) {
+        int result = 0;
+
+        String sql = "INSERT INTO MEMBERTBL (userid, password, name, email) VALUES (?, ?, ?, ?)";
+
+        con = getConnection();
+        try {
+
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setString(1, insertDto.getUserid());
+            pstmt.setString(2, insertDto.getPassword());
+            pstmt.setString(3, insertDto.getName());
+            pstmt.setString(4, insertDto.getEmail());
+
+            result = pstmt.executeUpdate(); // 0 false 1 success
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        } finally {
+            close(con, pstmt);
+        }
+
+        return result;
+
+        // 회원가입
+    }
+
+    // 회원 탈퇴
+
+    public int leave(MemberDto leaveDto) {
+        int result = 0;
+
+        String sql = "DELETE  FROM MEMBERTBL m WHERE userid = ?and password= ?";
+
+        con = getConnection();
+        try {
+
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setString(1, leaveDto.getUserid());
+
+            result = pstmt.executeUpdate(); // 0 false 1 success
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        } finally {
+            close(con, pstmt);
+        }
+
+        return result;
+
+        // 회원가입
     }
 
     //

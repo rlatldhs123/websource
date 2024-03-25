@@ -13,8 +13,15 @@ import action.Action;
 import action.ActionForward;
 import action.BookCreateAction;
 import action.BookDeleteAction;
+import action.BookLeaveAction;
 import action.BookListAction;
+import action.BookLoginAction;
+import action.BookLogoutAction;
+import action.BookPasswordAction;
 import action.BookReadAction;
+import action.BookRegisterAction;
+import action.BookSearchAction;
+import action.BookSearchAction;
 import action.BookUpdateAction;
 import action.BookDeleteAction;
 
@@ -40,7 +47,7 @@ public class BookControllerSevlet extends HttpServlet {
         Action action = null;
         if (cmd.equals("/list.do")) {
             // 작업이 끝난 후 보여줄 페이지 경로를 적어주면 된다
-            action = new BookListAction("view/list.jsp");
+            action = new BookListAction("/view/list.jsp");
         }
         // 생성된 action 에게 일을 시키기(원래는 서블릿이 전부 담당하고 해야 했던 일 이지만 액션에게 넘긴다)
         else if (cmd.equals("/create.do")) {
@@ -53,12 +60,30 @@ public class BookControllerSevlet extends HttpServlet {
         } else if (cmd.equals("/update.do")) {
             // 작업이 끝난 후 보여줄 페이지 경로를 적어주면 된다
             action = new BookUpdateAction("/read.do");
-        } else if (cmd.equals("/.do")) {
-            // 작업이 끝난 후 보여줄 페이지 경로를 적어주면 된다
-            action = new BookUpdateAction("/read.do");
         } else if (cmd.equals("/delete.do")) {
             // 작업이 끝난 후 보여줄 페이지 경로를 적어주면 된다
             action = new BookDeleteAction("/list.do");
+        } else if (cmd.equals("/search.do")) {
+            // 작업이 끝난 후 보여줄 페이지 경로를 적어주면 된다
+
+            action = new BookSearchAction("/view/list.jsp");
+        } else if (cmd.equals("/login.do")) {
+            action = new BookLoginAction("/list.do");
+
+        } else if (cmd.equals("/logout.do")) {
+
+            action = new BookLogoutAction("/");
+
+        } else if (cmd.equals("/change.do")) {
+
+            action = new BookPasswordAction("/");
+
+        } else if (cmd.equals("/register.do")) {
+            action = new BookRegisterAction("/login.do");
+
+        } else if (cmd.equals("/leave.do")) {
+            action = new BookLeaveAction("/");
+
         }
 
         // --------------------------------------------------------------------------------------------------------------------
@@ -82,7 +107,6 @@ public class BookControllerSevlet extends HttpServlet {
             rd.forward(req, resp);
 
         }
-
     }
 
     @Override

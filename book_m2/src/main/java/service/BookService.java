@@ -3,6 +3,8 @@ package service;
 import java.util.List;
 
 import dto.BookDto;
+import dto.ChangeDto;
+import dto.MemberDto;
 
 public interface BookService {
     // 서비스 인터페이스는 dao 를 호출 하는 곳이다
@@ -19,5 +21,13 @@ public interface BookService {
     boolean update(BookDto inseDto);
 
     boolean delete(int code);
+
+    MemberDto isLogin(MemberDto loginDto);
+
+    boolean passwordChange(ChangeDto changeDto);
+
+    boolean register(MemberDto insertDto);
+
+    boolean leave(MemberDto leaveDto);
 
 }

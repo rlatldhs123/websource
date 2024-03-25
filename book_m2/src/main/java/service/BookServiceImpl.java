@@ -4,6 +4,8 @@ import java.util.List;
 
 import dao.BookDao;
 import dto.BookDto;
+import dto.ChangeDto;
+import dto.MemberDto;
 
 public class BookServiceImpl implements BookService {
 
@@ -42,7 +44,31 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public boolean delete(int code) {
-        return dao.delete(null) == 1;
+        return dao.delete(code) == 1;
+
+    }
+
+    @Override
+    public MemberDto isLogin(MemberDto loginDto) {
+        return dao.isLogin(loginDto);
+
+    }
+
+    @Override
+    public boolean passwordChange(ChangeDto changeDto) {
+        return dao.passwordChange(changeDto) == 1;
+
+    }
+
+    @Override
+    public boolean register(MemberDto insertDto) {
+        return dao.register(insertDto) == 1;
+
+    }
+
+    @Override
+    public boolean leave(MemberDto leaveDto) {
+        return dao.leave(leaveDto) == 1;
 
     }
 
