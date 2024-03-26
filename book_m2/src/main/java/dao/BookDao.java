@@ -378,6 +378,7 @@ public class BookDao {
             pstmt = con.prepareStatement(sql);
 
             pstmt.setString(1, leaveDto.getUserid());
+            pstmt.setString(2, leaveDto.getPassword());
 
             result = pstmt.executeUpdate(); // 0 false 1 success
 

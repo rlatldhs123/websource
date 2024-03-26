@@ -68,6 +68,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public boolean leave(MemberDto leaveDto) {
+
         return dao.leave(leaveDto) == 1;
 
     }

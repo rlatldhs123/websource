@@ -1,8 +1,7 @@
 package action;
 
-import java.lang.reflect.Member;
-
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import dto.MemberDto;
 import lombok.AllArgsConstructor;
@@ -17,19 +16,23 @@ public class BookLeaveAction implements Action {
 
     @Override
     public ActionForward execute(HttpServletRequest req) throws Exception {
-        MemberDto leavDto = new MemberDto();
+        MemberDto leaveDto = new MemberDto();
 
-        leavDto.setUserid(req.getParameter("userid"));
+        leaveDto.setUserid(req.getParameter("userid"));
+        leaveDto.setPassword(req.getParameter("password"));
 
         BookService service = new BookServiceImpl();
 
-        if (!service.leave(leavDto)) {
-            path = "/leave.do";
+        if (service.leave(leaveDto)) {
+
+            HttpSession session = req.getSession();
+            session.invalidate();
+
+        } else {
+            path = "/view/leave.jsp";
 
         }
 
         return new ActionForward(path, false);
-
     }
-
 }

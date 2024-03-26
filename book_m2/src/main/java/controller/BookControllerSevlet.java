@@ -83,6 +83,8 @@ public class BookControllerSevlet extends HttpServlet {
 
         } else if (cmd.equals("/leave.do")) {
             action = new BookLeaveAction("/");
+            // porm.xml 로 path 경로를 추가 해놨기 때문에
+            // " / " 하나로 메인 홈페이지로 갈 수 있다
 
         }
 
