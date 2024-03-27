@@ -93,5 +93,5 @@ pageEncoding="UTF-8"%> <%@include file="../include/header.jsp"%>
   </div>
   <!-- /.box -->
 </section>
-<script src ='<c:url value="/js/write.js"/>'></script>
+<script src ='<c:url value="/js/write.js"/>'>   </script>
 <%@include file="../include/footer.jsp"%>

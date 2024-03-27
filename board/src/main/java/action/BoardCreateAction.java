@@ -52,7 +52,7 @@ public class BoardCreateAction implements Action {
             File uploadFile = new File(seavDir + File.separator + uuid + "_" + fileName);
 
             part.write(uploadFile.toString()); // 서버의 디스크에 파일 저장 하는 부분
-            dto.setAttach(uploadFile.toString());
+            dto.setAttach(uploadFile.getName());
 
         }
         System.out.println(dto);
@@ -64,7 +64,7 @@ public class BoardCreateAction implements Action {
 
         }
 
-        return new ActionForward(path, false);
+        return new ActionForward(path, true);
 
     }
 

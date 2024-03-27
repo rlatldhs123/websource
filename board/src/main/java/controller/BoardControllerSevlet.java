@@ -13,8 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import action.Action;
 import action.ActionForward;
 import action.BoardCreateAction;
+import action.BoardDeleteAction;
 import action.BoardListAction;
+import action.BoardModifyAction;
 import action.BoardReadAction;
+import action.BoardReplyAction;
 
 @WebServlet("*.do")
 @MultipartConfig // 파일 업로드를 지원 해줄 수 있게 해주는 어노테이션
@@ -49,6 +52,26 @@ public class BoardControllerSevlet extends HttpServlet {
         } else if (cmd.equals("/qRead.do")) {
 
             action = new BoardReadAction("/view/qna_board_view.jsp");
+
+        } else if (cmd.equals("/modify.do")) {
+
+            action = new BoardReadAction("/view/qna_board_modify.jsp");
+
+        } else if (cmd.equals("/update.do")) {
+
+            action = new BoardModifyAction("/qRead.do");
+
+        } else if (cmd.equals("/delete.do")) {
+
+            action = new BoardDeleteAction("/qList.do");
+
+        } else if (cmd.equals("/ReplyView.do")) {
+
+            action = new BoardReadAction("/view/qna_board_reply.jsp");
+
+        } else if (cmd.equals("/Reply.do")) {
+
+            action = new BoardReplyAction("/qList.do");
 
         }
 

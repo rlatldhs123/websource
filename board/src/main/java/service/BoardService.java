@@ -12,4 +12,10 @@ public interface BoardService {
 
     BoardDto getRow(int bno);
 
+    boolean update(BoardDto updateDto);
+
+    boolean delete(BoardDto deleteDto);
+
+    boolean reply(BoardDto replyDto);
+
 }

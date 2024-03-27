@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
-<%@include file="../include/header.jsp"%>
+<%@include file="/include/header.jsp"%>
 
 <!-- Main content -->
 <section class="content">
@@ -9,7 +9,7 @@
 			<h3 class="box-title">Read Board</h3>
 		</div>
 		<div style="height:20px"></div>
-		<form action="qRead.do" method="post" role="form">
+		<form action="" method="post" role="form">
 			<div class="box-body">
 				<div class="form-group row">
 					<label for="name" class="col-sm-2 col-form-label">글쓴이</label>
@@ -33,9 +33,12 @@
 					<label for="filename" class="col-sm-2 col-form-label" >파일첨부  </label>
 					<div class="col-sm-10">
 
-					${dto.attach}
+					<a href='<c:url value="/view/download.jsp?fileName=${dto.attach}"/>'>${dto.attach}</a>						
 
 					</div>
+
+					
+					
 				</div>
 				<div style="height:10px"></div>
 				<div class="box-footer text-center">
@@ -49,4 +52,15 @@
 		</form>
 	</div>
 </section>
-<%@include file="../include/footer.jsp"%>
+<script>
+
+const bno = ${dto.bno}
+
+</script>
+
+
+
+<script src ='<c:url value="/js/read.js"/>'></script>
+
+
+<%@include file="/include/footer.jsp"%>
