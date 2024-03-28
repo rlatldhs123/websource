@@ -12,6 +12,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import dto.BoardDto;
+import dto.SearchDto;
 
 public class BoardDao {
 
@@ -49,15 +50,94 @@ public class BoardDao {
 
     }
 
+    // 전체 게시물 개수 가져오기
+
+    public int getRows(String criteria, String ketword) {
+        int total = 0;
+
+        try {
+            con = getConnection();
+
+            String sql = "";
+
+            if (criteria.isEmpty()) {
+
+                sql += "SELECT count(*) FROM BOARD b ";
+                pstmt = con.prepareStatement(sql);
+
+            } else {
+
+                sql += "SELECT count(*) FROM BOARD b where " + criteria + "like ?";
+                pstmt.setString(1, "%" + ketword + "%");
+                pstmt = con.prepareStatement(sql);
+
+            }
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+
+                total = rs.getInt(1);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        } finally {
+            // 자원 닫아주기
+            close(con, pstmt, rs);
+        }
+        return total;
+
+    }
+
     // 전체 리스트 가져오기
 
-    public List<BoardDto> getList() {
+    public List<BoardDto> getList(SearchDto searchDto) {
         List<BoardDto> list = new ArrayList<>();
 
+        int start = searchDto.getPage() * searchDto.getAmount();
+        int end = (searchDto.getPage() - 1) * searchDto.getAmount();
+
         con = getConnection();
-        String sql = "SELECT BNO ,TITLE ,REGDATE ,READ_COUNT ,RE_LEV,name  FROM BOARD   ORDER BY RE_REF  DESC, RE_SEQ  ASC";
+
+        // 전체 리스트
+
+        // 검색 리스트
+
         try {
-            pstmt = con.prepareStatement(sql);
+
+            String sql = "SELECT BNO, TITLE, REGDATE, READ_COUNT, RE_LEV, name ";
+            sql += "from (SELECT rownum AS rnum, A.* ";
+            sql += "FROM (SELECT BNO, TITLE, REGDATE, READ_COUNT, RE_LEV, name ";
+            sql += "FROM BOARD  WHERE bno > 0 ";
+
+            if (searchDto.getCriteria().isEmpty()) {// 전체 리스트로 봄
+
+                sql += "ORDER BY RE_REF  DESC, RE_SEQ ASC) A ";
+                sql += "WHERE rownum <= ?) ";
+                sql += "WHERE rnum > ? ";
+
+                pstmt = con.prepareStatement(sql);
+
+                pstmt.setInt(1, start);
+                pstmt.setInt(2, end);
+            } else { // 검색 리스트로 봄
+
+                sql += "and " + searchDto.getCriteria() + " like ? ";
+                sql += "ORDER BY RE_REF  DESC, RE_SEQ ASC) A ";
+                sql += "WHERE rownum <= ?) ";
+                sql += "WHERE rnum > ? ";
+
+                pstmt = con.prepareStatement(sql);
+
+                pstmt.setString(1, "%" + searchDto.getKeyword() + "%");
+                pstmt.setInt(2, start);
+                pstmt.setInt(3, end);
+
+            }
+
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -259,6 +339,71 @@ public class BoardDao {
 
         return result;
 
+    }
+
+    // readCount 조회수 업데이트
+
+    public int updateRead(int readDto) {
+
+        // 제목 내용 수정 파일 첨부
+        int result = 0;
+
+        try {
+            con = getConnection();
+            String sql = "UPDATE BOARD  SET READ_COUNT = READ_COUNT + 1 WHERE  BNO =?";
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setInt(1, readDto);
+
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        } finally {
+            close(con, pstmt);
+        }
+
+        return result;
+    }
+
+    // 검색
+
+    public List<BoardDto> getSearchList(SearchDto searchDto) {
+        List<BoardDto> list = new ArrayList<>();
+
+        con = getConnection();
+        String sql = "SELECT BNO ,TITLE ,REGDATE ,READ_COUNT ,RE_LEV,name ";
+        sql += "FROM BOARD where " + searchDto.getCriteria() + " like ? ";
+        sql += "ORDER BY RE_REF DESC, RE_SEQ ASC ";
+
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, "%" + searchDto.getKeyword() + "%");
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                BoardDto dto = new BoardDto();
+
+                dto.setBno(rs.getInt("bno"));
+                dto.setTitle(rs.getString("title"));
+                dto.setName(rs.getString("name"));
+                dto.setRegDate(rs.getDate("regdate"));
+                dto.setReadCount(rs.getInt("read_count"));
+                dto.setReLev(rs.getInt("re_Lev"));
+
+                list.add(dto);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        } finally {
+            // 자원 닫아주기
+            close(con, pstmt, rs);
+        }
+
+        return list;
     }
 
     // ----------------------------------------자원정리----------------------------------------------------------------------------------------

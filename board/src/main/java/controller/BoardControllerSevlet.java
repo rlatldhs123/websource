@@ -18,6 +18,8 @@ import action.BoardListAction;
 import action.BoardModifyAction;
 import action.BoardReadAction;
 import action.BoardReplyAction;
+import action.BoardSearchAction;
+import action.BoardUpdateCountAction;
 
 @WebServlet("*.do")
 @MultipartConfig // 파일 업로드를 지원 해줄 수 있게 해주는 어노테이션
@@ -73,7 +75,16 @@ public class BoardControllerSevlet extends HttpServlet {
 
             action = new BoardReplyAction("/qList.do");
 
+        } else if (cmd.equals("/Count.do")) {
+
+            action = new BoardUpdateCountAction("/qRead.do");
         }
+
+        // } else if (cmd.equals("/search.do")) {
+
+        // action = new BoardSearchAction("/view/qna_board_list.jsp");
+
+        // }
 
         // --------------------------------------------------------------------------------------------------------------------
         // --------------------------------------------------------------------------------------------------------------------

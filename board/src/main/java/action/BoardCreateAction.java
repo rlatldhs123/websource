@@ -59,7 +59,7 @@ public class BoardCreateAction implements Action {
 
         BoardService service = new BoardServiceImpl();
 
-        if (!service.create(dto)) {
+        if (!service.insert(dto)) {
             path = "/view/qna_board_write.jsp";
 
         }

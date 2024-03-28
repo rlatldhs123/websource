@@ -9,7 +9,7 @@ import service.BoardServiceImpl;
 
 @AllArgsConstructor
 
-public class BoardReadAction implements Action {
+public class BoardUpdateCountAction implements Action {
 
     String path;
 
@@ -20,11 +20,13 @@ public class BoardReadAction implements Action {
 
         BoardService service = new BoardServiceImpl();
 
-        BoardDto dto = service.getRow((bno));
+        // 조회수 업데이트
 
-        req.setAttribute("dto", dto);
+        service.updateRead(bno);
 
-        return new ActionForward(path, false);
+        path += "?bno=" + bno;
+
+        return new ActionForward(path, true);
 
     }
 

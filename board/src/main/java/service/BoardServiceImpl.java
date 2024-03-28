@@ -4,21 +4,15 @@ import java.util.List;
 
 import dao.BoardDao;
 import dto.BoardDto;
+import dto.SearchDto;
 
 public class BoardServiceImpl implements BoardService {
 
     BoardDao dao = new BoardDao();
 
     @Override
-    public List<BoardDto> getList() {
-        return dao.getList();
-
-    }
-
-    @Override
-    public boolean create(BoardDto insertDto) {
-
-        return dao.insert(insertDto) == 1;
+    public List<BoardDto> getList(SearchDto searchDto) {
+        return dao.getList(searchDto);
 
     }
 
@@ -44,6 +38,34 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public boolean reply(BoardDto replyDto) {
         return dao.reply(replyDto) == 1;
+
+    }
+
+    @Override
+    public boolean updateRead(int readDto) {
+
+        return dao.updateRead(readDto) == 1;
+
+    }
+
+    @Override
+    public List<BoardDto> getSearchList(SearchDto searchDto) {
+
+        return dao.getSearchList(searchDto);
+
+    }
+
+    @Override
+    public boolean insert(BoardDto insertDto) {
+
+        return dao.insert(insertDto) == 1;
+
+    }
+
+    @Override
+    public int getRows(String criteria, String ketword) {
+
+        return dao.getRows(criteria, ketword);
 
     }
 

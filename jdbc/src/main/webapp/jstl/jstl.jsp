@@ -38,7 +38,7 @@ EL : jsp 에서 사용
 <%-- <c:out>  </c:out> --%>
 <%-- 화면에 뿌려내는 것 --%>
 
-<%-- <c:out value="${flag?"OK" : "Error"}"> </c:out> --%>
+<c:out value="${flag?"OK" : "Error"}"> </c:out>
 <c:out value="${flag?'OK' : 'Error'}"/> 
 <%-- 위는 간단하게 한 방식 바로 닫을 수 있다 --%>
 
