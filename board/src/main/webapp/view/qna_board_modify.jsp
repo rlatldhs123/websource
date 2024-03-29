@@ -43,6 +43,7 @@
 				</div>
 
 				<div style="height:20px"></div>
+			<input type="hidden" name = bno value = "${dto.bno}">
 				<div class="box-footer text-center">
 					<button type="submit" class="btn btn-primary">수정</button>
 					<button type="button" class="btn btn-danger">목록</button>
@@ -50,7 +51,10 @@
 				<div style="height:20px"></div>
 			</div>
 			<%--  사용자는 bno 가 필요 없지만 개발자는 필요하기에 숨겨서 보낸다 --%>
-			<input type="hidden" name = bno value = "${dto.bno}">
+			  	 <input type="hidden" name="page" value = "${searchDto.page}">
+				<input type="hidden" name="amount" value = "${searchDto.amount}">
+				<input type="hidden" name="criteria" value = "${searchDto.criteria}">
+				<input type="hidden" name="keyword" value = "${searchDto.keyword}">
 		</form>
 	</div>
 	<script src='<c:url value="/js/modify.js"/>'></script>

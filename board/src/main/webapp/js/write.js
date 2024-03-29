@@ -1,4 +1,5 @@
 // form 이 비어 있는지 확인
+const actionForm = document.querySelector("#actionForm");
 
 document.querySelector("#writeForm").addEventListener("submit", (e) => {
   e.preventDefault();
@@ -33,6 +34,9 @@ document.querySelector("#writeForm").addEventListener("submit", (e) => {
   e.target.submit();
 
   document.querySelector("#list").addEventListener("click", () => {
-    location.href = "/qList.do";
+    // location.href = "/qList.do";
+    // actionForm 보내기
+
+    actionForm.submit();
   });
 });

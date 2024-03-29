@@ -294,6 +294,63 @@ public class BoardDao {
         return result;
     }
 
+    // bno 와 password 받아서 비밀번호 확인하는 메소드
+
+    public int pwdCheck(BoardDto passDto) {
+        int result = 0;
+        con = getConnection();
+        String sql = "select count(*) from board where bno=? and password =?";
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, passDto.getBno());
+            pstmt.setString(2, passDto.getPassword());
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+
+                result = rs.getInt(1);
+
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        } finally {
+            // 자원 닫아주기
+            close(con, pstmt, rs);
+        }
+
+        return result;
+
+    }
+
+    // 원본과 댓글 같이날려버리기
+
+    public int deleteAll(int re_ref) {
+
+        // 부모 자식 둘다 제거
+        int result = 0;
+        con = getConnection();
+        // 제목 내용 수정 파일 첨부
+        // 원본글 비밀번호가 맞다면 전체 삭제
+        String sql = "delete from Board where re_ref=?";
+
+        try {
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setInt(1, re_ref);
+
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        } finally {
+            close(con, pstmt);
+        }
+
+        return result;
+    }
+
     public int reply(BoardDto replyDto) {
 
         int result = 0;

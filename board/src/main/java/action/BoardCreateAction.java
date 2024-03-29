@@ -1,6 +1,7 @@
 package action;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,13 @@ public class BoardCreateAction implements Action {
         String content = req.getParameter("content");
         String password = req.getParameter("password");
         String name = req.getParameter("name");
+
+        // 페이지 나누기 개념 추가 후
+
+        String page = req.getParameter("page");
+        String amount = req.getParameter("amount");
+        String criteria = req.getParameter("criteria");
+        String keyword = URLEncoder.encode(req.getParameter("keyword"), "utf-8");
 
         BoardDto dto = new BoardDto();
 
@@ -60,7 +68,12 @@ public class BoardCreateAction implements Action {
         BoardService service = new BoardServiceImpl();
 
         if (!service.insert(dto)) {
-            path = "/view/qna_board_write.jsp";
+            path = "/view/qna_board_write.jsp?page=" + page + "&amount=" + amount + "&criteria=" + criteria
+                    + "&keyword=" + keyword;
+
+        } else {
+            path += "?page=" + page + "&amount=" + amount + "&criteria=" + criteria
+                    + "&keyword=" + keyword;
 
         }
 

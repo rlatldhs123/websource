@@ -25,4 +25,8 @@ public interface BoardService {
 
     int getRows(String criteria, String ketword);
 
+    boolean deleteAll(int re_ref);
+
+    boolean pwdCheck(BoardDto passDto);
+
 }

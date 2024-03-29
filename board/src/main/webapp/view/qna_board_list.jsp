@@ -10,12 +10,26 @@
         <div class="row justify-content-md-between">
             <div class="row">
                 <div class="col-md-4">
-                    <a href='<c:url value="/view/qna_board_write.jsp"/>' class="btn btn-success">새글 작성</a>
+                    <a href='#' class="btn btn-success">새글 작성</a>
                 </div><!--글쓰기 버튼-->
+
+                <div class="col-md-3">
+                    <select name="amount" class="form-control">
+                        <option value="10" <c:out value="${pageDto.searchDto.amount == 10 ? 'selected' : ''}" /> >10</option>
+                        <option value="20" <c:out value="${pageDto.searchDto.amount == 20 ? 'selected' : ''}" /> >20</option>
+                        <option value="30" <c:out value="${pageDto.searchDto.amount == 30 ? 'selected' : ''}" /> >30</option>
+                        <option value="40" <c:out value="${pageDto.searchDto.amount == 40 ? 'selected' : ''}" /> >40</option>
+                    </select>
+                </div>
+
                 <div class="col-md-5">
-                    <form action="/qList.do" method="post" class="form-inline" name="search">
+                    <form action="/qList.do" method="get" class="form-inline" name="search">
+                        <input type="hidden" name="page" value="${pageDto.searchDto.page}">
+                        <input type="hidden" name="amount" value="${pageDto.searchDto.amount}">
+                       
+
                         <div class="form-group">
-                            <select name="criteria" id="criteria" class="form-control">
+                            <select name="criteria" class="form-control">
                                 <option value="n" <c:out value="${pageDto.searchDto.criteria == null ? 'selected' : ''}" /> >----------------</option>
                                 <option value="title" <c:out value="${pageDto.searchDto.criteria == 'title' ? 'selected' : ''}" /> >title</option>
                                 <option value="content" <c:out value="${pageDto.searchDto.criteria == 'content' ? 'selected' : ''}" /> >content</option>
@@ -53,7 +67,7 @@
                                 <%-- 공백 한칸 --%>
                             </c:forEach>
                         </c:if>   
-                        <a href="<c:url value='/Count.do?bno=${dto.bno}'/>">${dto.title}</a>   
+                        <a href="${dto.bno}" class="move">${dto.title}</a>   
                     </td>
                     <td class='text-center'>${dto.name}</td><!--작성자-->
                     <td class='text-center'>${dto.regDate}</td><!--날짜-->
@@ -65,37 +79,32 @@
             <div class="row  justify-content-md-center">
                 <nav aria-label="...">
                     <ul class="pagination">
-                         <c:if test="${pageDto.prev}">
-                        <li class="page-item">
-                            <a class="page-link" href="${pageDto.startPage-1}" >Previous</a>
-                        </li>
-                         </c:if>
-
-
-
-
-                         <c:forEach begin="${pageDto.startPage}" end="${pageDto.endPage}" var = "idx"> 
-                        <li class="page-item  <c:out value="${pageDto.searchDto.page == idx ? 'active' : ''}" />" aria-current="page">
-                            <a class="page-link" href="${idx}">${idx}</a>
-                        </li>
-                         </c:forEach>
-
-
-                        <c:if test="${pageDto.next}">
-                        <li class="page-item">
-                            <a class="page-link" href="${pageDto.endPage+1}">Next</a>
-                        </li>
+                        <c:if test="${pageDto.prev}">
+                            <li class="page-item">
+                                <a class="page-link" href="${pageDto.startPage-1}" >Previous</a>
+                            </li>
                         </c:if>
 
+                        <c:forEach begin="${pageDto.startPage}" end="${pageDto.endPage}" var="idx"> 
+                            <li class="page-item  <c:out value="${pageDto.searchDto.page == idx ? 'active' : ''}" />" aria-current="page">
+                                <a class="page-link" href="${idx}">${idx}</a>
+                            </li>
+                        </c:forEach>
+
+                        <c:if test="${pageDto.next}">
+                            <li class="page-item">
+                                <a class="page-link" href="${pageDto.endPage+1}">Next</a>
+                            </li>
+                        </c:if>
                     </ul>
                 </nav>  
             </div>
         </div>
         <div style="height:20px"></div>
     </div><!-- /.box -->
-
 </section>
-<form action="" method="get" id="actionForm">
+
+<form action='<c:url value="/qList.do" />' method="get" id="actionForm">
    <input type="hidden" name="page" value = "${pageDto.searchDto.page}">
    <input type="hidden" name="amount" value = "${pageDto.searchDto.amount}">
    <input type="hidden" name="criteria" value = "${pageDto.searchDto.criteria}">
@@ -103,6 +112,6 @@
 
 </form>
 
-    <script src="/js/list.js"></script>
+<script src="/js/list.js"></script>
 
 <%@include file="/include/footer.jsp"%>

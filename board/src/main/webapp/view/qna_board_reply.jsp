@@ -49,9 +49,17 @@
 			<%-- 원본글 정보 담아준 것 --%>
 			<input type="hidden" name="reRef" value = "${dto.reRef}">
 			<input type="hidden" name="reSeq" value = "${dto.reSeq}">
-
 			<input type="hidden" name="reLev" value = "${dto.reLev}">
 			<input type="hidden" name="bno" value = "${dto.bno}">
+
+
+			<%-- 페이지 나누기 정보 --%>
+
+
+				 <input type="hidden" name="page" value = "${searchDto.page}">
+				<input type="hidden" name="amount" value = "${searchDto.amount}">
+				<input type="hidden" name="criteria" value = "${searchDto.criteria}">
+				<input type="hidden" name="keyword" value = "${searchDto.keyword}">
 		</form>
 	</div>
 </section>
